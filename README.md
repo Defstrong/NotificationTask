@@ -43,6 +43,10 @@ To ensure reliability, tests have been provided. You can run them using dotnet t
 ```shell
 cd tests
 ```
+To run the testing tool.
+```
+dotnet test
+```
 
 ## Example of Events for Testing
 

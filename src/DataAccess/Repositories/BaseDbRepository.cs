@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
+
 namespace DataAccess;
 
 public abstract class BaseDbRepository<T> : IBaseDbRepository<T>
@@ -30,7 +31,7 @@ public abstract class BaseDbRepository<T> : IBaseDbRepository<T>
 
     public async IAsyncEnumerable<T> GetAsync([EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        List<T> notificationEvents = await _context.Set<T>().AsNoTracking().ToListAsync();
+        List<T> notificationEvents = await _context.Set<T>().AsNoTracking().ToListAsync(cancellationToken);
         foreach (T notificationEvent in notificationEvents)
             yield return notificationEvent;
     }
@@ -40,5 +41,14 @@ public abstract class BaseDbRepository<T> : IBaseDbRepository<T>
         _context.RemoveRange(entities);
         int removeResult = await _context.SaveChangesAsync(cancellationToken);
         return removeResult > 0;
+    }
+
+    public async Task<bool> UpdateRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
+    {
+        foreach (T entity in entities)
+            _context.Entry(entity).State = EntityState.Modified;
+
+        int updateResult = await _context.SaveChangesAsync(cancellationToken);
+        return updateResult > 0;
     }
 }

@@ -14,24 +14,27 @@ public sealed class NotificationWorker : BackgroundWorker
         _notificationEventRepository = notificationEventRepository;
     }
 
-    protected override Task DoWorkAsync(CancellationToken cancellationToken = default)
+    protected override async Task DoWorkAsync(CancellationToken cancellationToken = default)
     {
+        List<DbNotificationEvent> unSendedNotificationEvents;
         lock (LockObject)
         {
-            IEnumerable<DbNotificationEvent> notificationEvents = _notificationEventRepository
-                .GetAsync(cancellationToken).ToBlockingEnumerable();
+            unSendedNotificationEvents = _notificationEventRepository
+               .GetUnsendedAsync(cancellationToken).ToBlockingEnumerable().ToList();
+        }
+        if (!unSendedNotificationEvents.Any())
+            return;
 
-            if (!notificationEvents.Any())
-                return Task.CompletedTask;
-
-            foreach (DbNotificationEvent notificationEvent in notificationEvents)
-            {
-                _messageRepository.SendAsync(notificationEvent, cancellationToken);
-            }
-
-            _notificationEventRepository.RemoveRange(notificationEvents);
+        for (int notifyIdx = 0; notifyIdx < unSendedNotificationEvents.Count(); notifyIdx++)
+        {
+            await Task.Delay(5000);
+            unSendedNotificationEvents[notifyIdx].IsSended = await _messageRepository
+                .SendAsync(unSendedNotificationEvents[notifyIdx], cancellationToken);
         }
 
-        return Task.CompletedTask;
+        lock (LockObject)
+        {
+            _notificationEventRepository.UpdateRangeAsync(unSendedNotificationEvents, cancellationToken);
+        }
     }
 }

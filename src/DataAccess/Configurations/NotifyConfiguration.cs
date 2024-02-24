@@ -36,6 +36,12 @@ public sealed class NotifyConfituration : IEntityTypeConfiguration<DbNotificatio
           .IsRequired();
 
         builder
+          .Property(notifyEvent => notifyEvent.IsSended)
+          .HasColumnType("BOOLEAN")
+          .HasColumnName("is_sended")
+          .IsRequired();
+
+        builder
           .Property(notifyEvent => notifyEvent.WebsiteUrl)
           .HasColumnType("VARCHAR")
           .HasColumnName("website_url")

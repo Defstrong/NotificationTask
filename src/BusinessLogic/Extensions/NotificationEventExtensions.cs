@@ -9,8 +9,9 @@ public static class NotificationEventExtensions
           OrderType = dbNotificationEvent.OrderType,
           SessionId = dbNotificationEvent.SessionId,
           Card = dbNotificationEvent.Card,
-          EventDate = dbNotificationEvent.EventDate,
-          WebsiteUrl = dbNotificationEvent.WebsiteUrl
+          EventDate = dbNotificationEvent.EventDate.ToString(),
+          WebsiteUrl = dbNotificationEvent.WebsiteUrl,
+          IsSended = dbNotificationEvent.IsSended
       };
 
     public static DbNotificationEvent DtoToNotification(this NotificationEventDto notificationEventDto)
@@ -19,7 +20,8 @@ public static class NotificationEventExtensions
           OrderType = notificationEventDto.OrderType,
           SessionId = notificationEventDto.SessionId,
           Card = notificationEventDto.Card,
-          EventDate = notificationEventDto.EventDate,
-          WebsiteUrl = notificationEventDto.WebsiteUrl
+          EventDate = DateTime.Parse(notificationEventDto.EventDate),
+          WebsiteUrl = notificationEventDto.WebsiteUrl,
+          IsSended = notificationEventDto.IsSended
       };
 }

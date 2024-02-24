@@ -1,3 +1,6 @@
 namespace DataAccess;
 
-public interface INotificationEventRepository : IBaseDbRepository<DbNotificationEvent> { }
+public interface INotificationEventRepository : IBaseDbRepository<DbNotificationEvent>
+{
+    IAsyncEnumerable<DbNotificationEvent> GetUnsendedAsync(CancellationToken cancellationToken);
+}

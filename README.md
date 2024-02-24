@@ -1,4 +1,4 @@
-#Notification Service
+# Notification Service
 
 ## Description
 This service provides the ability to notify users about events related to their cards. Events are accepted in JSON format via the POST method and are stored in the database. A worker/job is also implemented to notify clients by simply outputting notifications to the terminal.

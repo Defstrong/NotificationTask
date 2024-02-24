@@ -1,5 +1,3 @@
-using DataAccess;
-
 namespace BusinessLogic;
 
 public record NotificationEventDto

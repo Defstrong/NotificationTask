@@ -6,9 +6,8 @@ public static class RepositoryExtension
 {
     public static void AddRepositories(this IServiceCollection services)
     {
-        services.AddDbContext<NotifyContext>();
+        services.AddDbContext<NotifyDbContext>();
         services.AddScoped<INotificationEventRepository, NotificationEventRepository>();
-        services.AddScoped<NotificationWorker>();
         services.AddScoped<IMessageRepository, MessageRepository>();
     }
 }

@@ -5,18 +5,26 @@ namespace DataAccess;
 public abstract class BaseDbRepository<T> : IBaseDbRepository<T>
   where T : class
 {
-    private readonly NotifyContext _context;
+    private readonly NotifyDbContext _context;
 
-    public BaseDbRepository(NotifyContext context)
+    public BaseDbRepository(NotifyDbContext context)
       => _context = context;
 
     public async Task<bool> CreateAsync(T entity, CancellationToken cancellationToken = default)
     {
+        int createResult;
         lock (new object())
         {
             _context.Set<T>().AddAsync(entity);
         }
-        int createResult = await _context.SaveChangesAsync();
+        try
+        {
+            createResult = await _context.SaveChangesAsync();
+        }
+        catch
+        {
+            return false;
+        }
         return createResult > 0;
     }
 

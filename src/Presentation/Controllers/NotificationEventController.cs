@@ -2,7 +2,7 @@ using BusinessLogic;
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Presentation.Controllers;
+namespace Presentation;
 
 [ApiController]
 [Route("[controller]")]

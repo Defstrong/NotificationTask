@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess;
 
-public sealed class NotifyContext : DbContext
+public sealed class NotifyDbContext : DbContext
 {
     DbSet<DbNotificationEvent> NotificationEvents => Set<DbNotificationEvent>();
 
@@ -11,7 +11,10 @@ public sealed class NotifyContext : DbContext
     private string DbPath { get; } = "../Presentation/app.db";
 
 
-    public NotifyContext() => ConnectionString = $"Data Source={DbPath}";
+    public NotifyDbContext()
+    {
+        ConnectionString = $"Data Source={DbPath}";
+    }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
         => options.UseSqlite(ConnectionString);

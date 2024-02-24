@@ -1,4 +1,4 @@
-namespace DataAccess;
+namespace BusinessLogic;
 
 public abstract class BackgroundWorker : IDisposable
 {
@@ -10,7 +10,7 @@ public abstract class BackgroundWorker : IDisposable
         _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         while (!cancellationToken.IsCancellationRequested)
         {
-            _timer = new Timer(async (_) => await DoWorkAsync(), null, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1));
+            _timer = new Timer(async (_) => await DoWorkAsync(), null, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(15));
         }
         await Task.Delay(50);
     }

@@ -3,7 +3,6 @@ namespace DataAccess;
 public sealed class MessageRepository : IMessageRepository
 {
     private readonly string _messageHelper;
-
     public MessageRepository()
         => _messageHelper = "{0}\n{1}\nCard {2}\nWebService {3}";
 

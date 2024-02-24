@@ -2,8 +2,8 @@ namespace DataAccess;
 
 public sealed class NotificationEventRepository : BaseDbRepository<DbNotificationEvent>, INotificationEventRepository
 {
-    private readonly NotifyContext _context;
+    private readonly NotifyDbContext _context;
 
-    public NotificationEventRepository(NotifyContext context) : base(context)
+    public NotificationEventRepository(NotifyDbContext context) : base(context)
       => _context = context;
 }

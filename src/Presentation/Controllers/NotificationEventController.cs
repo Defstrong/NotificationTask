@@ -1,6 +1,6 @@
 using BusinessLogic;
-using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.CompilerServices;
 
 namespace Presentation;
 
@@ -29,7 +29,7 @@ public class NotificationEventController : ControllerBase
     }
 
     [HttpGet]
-    public async IAsyncEnumerable<NotificationEventDto> GetAsync([EnumeratorCancellation] CancellationToken cancellationToken)
+    public async IAsyncEnumerable<NotificationEventDto> GetAsync([EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         await foreach (NotificationEventDto notificationEvent in _notificationEventService.GetAsync(cancellationToken))
             yield return notificationEvent;

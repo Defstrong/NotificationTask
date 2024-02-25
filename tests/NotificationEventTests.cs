@@ -1,6 +1,6 @@
-using BusinessLogic;
-using DataAccess;
 using Moq;
+using DataAccess;
+using BusinessLogic;
 
 public class NotificationEventServiceTest
 {
@@ -71,6 +71,28 @@ public class NotificationEventServiceTest
         // Assert
         Assert.False(secondResult);
         _mockRepository.Verify(repo => repo.CreateAsync(It.IsAny<DbNotificationEvent>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
+    }
+
+    [Fact]
+    public async Task MessageRepository_SendAsync_Success()
+    {
+        // Arrange
+        var notificationEvent = new DbNotificationEvent
+        {
+            OrderType = "Purchase",
+            SessionId = "29827525-06c9-4b1e-9d9b-7c4584e82f56",
+            Card = "4433**1409",
+            EventDate = DateTime.Now,
+            WebsiteUrl = "https://amazon.com"
+        };
+
+        var repository = new MessageRepository();
+
+        // Act
+        var result = await repository.SendAsync(notificationEvent);
+
+        // Assert
+        Assert.True(result);
     }
 }
 

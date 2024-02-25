@@ -5,10 +5,11 @@ public abstract class BackgroundWorker : IDisposable
     private CancellationTokenSource? _cancellationTokenSource;
     private Timer? _timer;
 
-    protected virtual async Task ExecuteAsync(CancellationToken cancellationToken = default)
+    protected virtual Task ExecuteAsync(CancellationToken cancellationToken = default)
     {
+        _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         _timer = new Timer(async (_) => await DoWorkAsync(cancellationToken), null, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(15));
-        await Task.Delay(150);
+        return Task.CompletedTask;
     }
 
     protected abstract Task DoWorkAsync(CancellationToken cancellationToken = default);

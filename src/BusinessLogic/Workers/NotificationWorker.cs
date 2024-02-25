@@ -22,12 +22,12 @@ public sealed class NotificationWorker : BackgroundWorker
             unSendedNotificationEvents = _notificationEventRepository
                .GetUnsendedAsync(cancellationToken).ToBlockingEnumerable().ToList();
         }
+
         if (!unSendedNotificationEvents.Any())
             return;
 
         for (int notifyIdx = 0; notifyIdx < unSendedNotificationEvents.Count(); notifyIdx++)
         {
-            await Task.Delay(5000);
             unSendedNotificationEvents[notifyIdx].IsSended = await _messageRepository
                 .SendAsync(unSendedNotificationEvents[notifyIdx], cancellationToken);
         }
